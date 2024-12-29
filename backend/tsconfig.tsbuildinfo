@@ -1,0 +1,1 @@
+{"root":["./src/index.ts","./src/logCollector.ts","./src/controllers/authController.ts","./src/lib/dbConnect.ts","./src/middleware/middleware.ts","./src/models/Schema.ts","./src/routes/authRouter.ts","./src/routes/index.ts","./src/routes/logRoutes.ts"],"version":"5.7.2"}
