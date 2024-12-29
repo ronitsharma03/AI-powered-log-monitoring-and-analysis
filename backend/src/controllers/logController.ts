@@ -117,9 +117,42 @@ export async function fetchLogs (req: Request, res: Response): Promise<any> {
 
 
     }catch(error){
-
+        return res.status(500).json({
+            message: "Internal Server Error"
+        });
     }
     
+}
+
+async function analyzeLogsWithLLM(logs: logType[], defaultPrompt: string) {
+    const llmPrompt = createLLMPrompt(logs, defaultPrompt);
+
+    try{
+        const response = await axios.post("http://localhost:11434/api/chat", {
+            prompt: llmPrompt,
+            temperature: 0.7,
+            max_tokens: 500
+        });
+
+        return response.data;
+
+    }catch(error){
+        console.log("Error communicating with Ollama LLM: ", error);
+        return null;
+    }
+}
+
+function createLLMPrompt(logs: logType[], defaultPrompt: string) {
+    let prompt = defaultPrompt ? defaultPrompt + "\n\n" : "Analyze the following logs and provide insights and possible resolution: \n\n";
+
+    logs.forEach(log => {
+        prompt += `Timestamp: ${log.timestamp}\n`;
+        prompt += `Source: ${log.source}\n`;
+        prompt += `Message: ${log.message}\n`;
+        prompt += `Category: ${log.category}\n\n`; 
+    });
+
+    return prompt;
 }
 
 
