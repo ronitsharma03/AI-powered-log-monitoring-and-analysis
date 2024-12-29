@@ -62,7 +62,7 @@ export async function saveLogs(req: Request, res: Response): Promise<any> {
     }
 }
 
-export async function fetchLogs (req: Request, res: Response): Promise<any> {
+export async function startAnalysis (req: Request, res: Response): Promise<any> {
     const { category, timeframe_minutes, limit } = req.body;
 
     if (!category) {
@@ -129,9 +129,17 @@ async function analyzeLogsWithLLM(logs: logType[], defaultPrompt: string) {
 
     try{
         const response = await axios.post("http://localhost:11434/api/chat", {
-            prompt: llmPrompt,
+            model: "llama3.2",
+            messages: [
+                {
+                    role: "user",
+                    content: llmPrompt
+                }
+            ],
+            // prompt: llmPrompt,
             temperature: 0.7,
-            max_tokens: 500
+            max_tokens: 500,
+            stream: false
         });
 
         return response.data;
