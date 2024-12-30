@@ -17,7 +17,7 @@ export async function triggerLogGeneration(
   console.log("Log generation endpoint hit");
 
   try {
-    const pythonScriptPath = "/home/ronit/Downloads/python_script/log_collect.py";
+    const pythonScriptPath = "/home/ronit/Desktop/ai-logCollector/python_script/log_collect.py";
 
     // const args = []; => for giving any argun=ments to the script
 
