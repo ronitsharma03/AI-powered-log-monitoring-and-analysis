@@ -1,5 +1,5 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   LineChart,
   Line,
@@ -68,7 +68,17 @@ export default function TimeGraph({ data }: TimeGraphProps) {
             dataKey="errorCount"
             stroke="#ef4444"
             strokeWidth={2}
-            dot={{ r: 4 }}
+            dot={(props) =>
+              props.payload.errorCount > 0 ? (
+                <circle
+                  cx={props.cx}
+                  cy={props.cy}
+                  r={4}
+                  stroke="#ef4444"
+                  fill="#ef4444"
+                />
+              ) : <React.Fragment />
+            }
             activeDot={{ r: 6 }}
           />
         </LineChart>

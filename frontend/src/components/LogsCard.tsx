@@ -15,55 +15,40 @@ export interface AnalysisType {
   content: string;
 }
 
-export interface Message {
-  id: string;
-  content: string;
-  sender: "user" | "bot";
-  timestamp: string;
-}
-
 export default function LogsCard({
   logs,
-  analyses,
-  setChatMessages,
+  // analyses,
   setSelectedLogId,
   selectedLogId,
 }: {
   logs: Log[];
-  analyses: AnalysisType[];
-  setChatMessages: React.Dispatch<React.SetStateAction<Message[]>>;
+  // analyses: AnalysisType[];
   setSelectedLogId: React.Dispatch<React.SetStateAction<string | null>>;
   selectedLogId: string | null;
 }) {
-  const logsEndRef = useRef<any>(null);
+  const logsEndRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isAtBottom, setIsAtBottom] = useState(true);
-  const [showScrollToBottom, setShowScrollToBottom] = useState(false);
 
-  const scrollToBottom = () => {
-    logsEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  const scrollToBottom = (smooth: boolean = true) => {
+    logsEndRef.current?.scrollIntoView({
+      behavior: smooth ? "smooth" : "auto",
+    });
   };
 
   const handleScroll = () => {
     if (containerRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
       const atBottom = scrollTop + clientHeight >= scrollHeight - 10; // Allow a small buffer
-
       setIsAtBottom(atBottom);
-      setShowScrollToBottom(!atBottom);
     }
-  };
-
-  const handleScrollToBottomClick = () => {
-    scrollToBottom();
-    setIsAtBottom(true);
   };
 
   useEffect(() => {
     if (isAtBottom) {
       scrollToBottom();
     }
-  }, [logs, isAtBottom]);
+  }, [logs]);
 
   return (
     <div
@@ -71,11 +56,8 @@ export default function LogsCard({
       ref={containerRef}
       onScroll={handleScroll}
     >
-      <h2
-        className={`text-xl font-medium mb-4 flex items-center space-x-2 text-white
-        }`}
-      >
-        <Terminal size={24} className={"text-blue-400"} />
+      <h2 className="text-xl font-medium mb-4 flex items-center space-x-2 text-white">
+        <Terminal size={24} className="text-blue-400" />
         <span>Logs</span>
       </h2>
       <div className="space-y-2 max-h-[500px] overflow-y-auto logs-card-container pr-2">
@@ -85,17 +67,6 @@ export default function LogsCard({
             onClick={() => {
               if (log.type === "error") {
                 setSelectedLogId(log.id);
-                const analysis = analyses.find((a) => a.logId === log.id);
-                if (analysis) {
-                  setChatMessages([
-                    {
-                      id: Math.random().toString(),
-                      content: analysis.content,
-                      sender: "bot",
-                      timestamp: new Date().toISOString(),
-                    },
-                  ]);
-                }
               }
             }}
             className={`w-full text-left p-3 rounded-lg flex items-center space-x-3 transition-colors duration-200 ${
@@ -107,12 +78,9 @@ export default function LogsCard({
             {log.type === "error" ? (
               <AlertTriangle className="text-red-500 shrink-0" />
             ) : (
-              <Terminal className={`text-gray-400 shrink-0`} />
+              <Terminal className="text-gray-400 shrink-0" />
             )}
-            <span
-              className={`text-sm font-mono text-gray-300
-              }`}
-            >
+            <span className="text-sm font-mono text-gray-300">
               {new Date(log.timestamp).toLocaleTimeString()}
             </span>
             <span
@@ -126,10 +94,10 @@ export default function LogsCard({
         ))}
         <div ref={logsEndRef} />
       </div>
-      {showScrollToBottom && (
+      {!isAtBottom && (
         <button
           className="fixed bottom-10 right-10 bg-blue-500 text-white p-2 rounded-full shadow-lg"
-          onClick={handleScrollToBottomClick}
+          onClick={() => scrollToBottom()}
         >
           Scroll to bottom
         </button>
