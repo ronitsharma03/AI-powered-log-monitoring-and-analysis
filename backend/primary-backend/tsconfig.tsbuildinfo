@@ -1,1 +1,1 @@
-{"root":["./src/index.ts","./src/controllers/analysisController.ts","./src/controllers/logController.ts","./src/routes/logCollector.ts","./src/services/logMonitor.ts","./src/services/prismaService.ts","./src/services/redisClient.ts"],"version":"5.7.2"}
+{"root":["./src/index.ts","./src/controllers/analysisController.ts","./src/controllers/logController.ts","./src/services/logMonitor.ts","./src/services/prismaService.ts","./src/services/redisClient.ts"],"version":"5.7.2"}

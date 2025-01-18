@@ -9,12 +9,12 @@ interface Log {
 
 const logSources = [
   "/var/log/syslog",
-//   "/var/log/syslog.1",
-//   "/var/log/kern.log",
-//   "/var/log/auth.log",
-//   "/var/log/cups/error_log",
-//   "/var/log/dpkg.log",
-//   "/var/log/apport.log"
+  "/var/log/syslog.1",
+  "/var/log/kern.log",
+  "/var/log/auth.log",
+  "/var/log/cups/error_log",
+  "/var/log/dpkg.log",
+  "/var/log/apport.log"
 ];
 
 const errorKeywords = [
@@ -118,16 +118,17 @@ export const startLogMonitoring = () => {
 const processLogs = (chunk: any) => {
   const logs = chunk.split("\n");
 
-  logs.forEach((log: any) => {
+  logs.forEach(async (log: any) => {
     if (log && errorKeywords.some((keyword) => log.includes(keyword))) {
       const logEntry = {
-        timestamp: new Date().toISOString(),
+        timestamp: new Date(),
         log: log.trim(),
       };
 
       try {
-        redisClient.lPush("logs", JSON.stringify(logEntry));
+        await redisClient.lPush("logs", JSON.stringify(logEntry));
         console.log("Successfully pushed the error log to Queue");
+        console.log(logEntry);
       } catch (error) {
         console.log("Error sending logs to Redis Queue", error);
       }

@@ -15,11 +15,11 @@ datasource db {
 
 model Log{
   id Int @id @default(autoincrement())
-  timestamp DateTime @default(now())
+  timestamp DateTime? @default(now())
   source String?
   logMessage String
   analysis String? 
-  isAnalysed logStatus @default(Pending)
+  isAnalysed logStatus? @default(Pending)
 }
 
 enum logStatus{
