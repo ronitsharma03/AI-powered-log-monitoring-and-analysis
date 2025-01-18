@@ -1,6 +1,7 @@
 import { saveLogsAndAnalysis } from "../services/dbService";
 import { redisClient } from "../config/redisConfig";
 import { WebSocket } from "ws";
+import { main } from "../services/llmService";
 
 interface logDataType {
   key: string;
@@ -13,12 +14,13 @@ export const logProcessor = async (ws: WebSocket) => {
       const logsData = await redisClient.brPop("logs", 0);
       if (logsData) {
         console.log(logsData);
-        saveLogsAndAnalysis(logsData, "Yes the analysis is done");
+        const response: string = await main(logsData.element);
+        await saveLogsAndAnalysis(logsData, response);
 
         if(ws.readyState === ws.OPEN){
             const logWithAnalysis = {
                 log: logsData.element,
-                analysis: "Here is the analysis"
+                analysis: response
             };
             ws.send(JSON.stringify(logWithAnalysis));
         }else{

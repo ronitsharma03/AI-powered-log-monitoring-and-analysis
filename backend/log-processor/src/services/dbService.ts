@@ -6,6 +6,7 @@ interface logMessageType {
 }
 export const saveLogsAndAnalysis = async (logMessage: logMessageType, logAnalysis: string) => {
     try{
+        const jsonAnalysis = JSON.parse(logAnalysis);
         await prisma.log.create({
             data: {
                 logMessage: logMessage.element,
@@ -14,8 +15,8 @@ export const saveLogsAndAnalysis = async (logMessage: logMessageType, logAnalysi
             }
         });
 
-        console.log("Saved to DB");
+        console.log("Log and its analysis saved to database");
     }catch(error){
-        console.log("Error saving to the DB");
+        console.log("Error saving to the database");
     }
 }
