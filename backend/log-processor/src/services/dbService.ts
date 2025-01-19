@@ -10,8 +10,9 @@ export const saveLogsAndAnalysis = async (logMessage: logMessageType, logAnalysi
         await prisma.log.create({
             data: {
                 logMessage: logMessage.element,
-                analysis: logAnalysis,
-                isAnalysed: logAnalysis ? "Success" : "Pending"
+                analysis: jsonAnalysis,
+                isAnalysed: logAnalysis ? "Success" : "Pending",
+                source: jsonAnalysis.breakdown.module
             }
         });
 

@@ -11,7 +11,11 @@ interface logDataType {
 export const logProcessor = async (ws: WebSocket) => {
   while (true) {
     try {
-      const logsData = await redisClient.brPop("logs", 0);
+      const logsData = await redisClient.brPop("logs", 0) as logDataType | null;
+      if (logsData === null) {
+        console.log("No log found");
+        continue;
+      }
       if (logsData) {
         console.log(logsData);
         const response: string = await main(logsData.element);
