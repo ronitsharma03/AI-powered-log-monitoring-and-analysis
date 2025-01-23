@@ -1,14 +1,14 @@
 import { saveLogsAndAnalysis } from "../services/dbService";
 import { redisClient } from "../config/redisConfig";
-import { WebSocket } from "ws";
 import { main } from "../services/llmService";
+import { WebSocketServer } from "ws";
 
 interface logDataType {
   key: string;
   element: string;
 }
 
-export const logProcessor = async (ws: WebSocket) => {
+export const logProcessor = async (wss: WebSocketServer) => {
   while (true) {
     try {
       const logsData = await redisClient.brPop("logs", 0) as logDataType | null;
@@ -19,22 +19,24 @@ export const logProcessor = async (ws: WebSocket) => {
       if (logsData) {
         console.log(logsData);
         const response: string = await main(logsData.element);
-        await saveLogsAndAnalysis(logsData, response);
-
-        if(ws.readyState === ws.OPEN){
-            const logWithAnalysis = {
-                log: logsData.element,
-                analysis: response
-            };
-            ws.send(JSON.stringify(logWithAnalysis));
-        }else{
-            console.log("Error sending logAnalysis to primary BE")
+        const logId = await saveLogsAndAnalysis(logsData, response);
+        console.log("ID of log: ", logId);
+        const data = {
+          logId: logId,
+          logMessage: logsData.element
         }
+        
+        wss.clients.forEach((client) => {
+          if(client.readyState === client.OPEN){
+            client.send(JSON.stringify(data));
+          }
+        })
+
       } else {
         console.log("No logs found");
       }
     } catch (error) {
-      console.log("Error popping the logs from Queue");
+      console.log("Error popping the logs from Queue", error);
     }
   }
 };

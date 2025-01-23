@@ -126,12 +126,6 @@ const processLogs = (chunk: any) => {
       };
 
       try {
-        // fs.appendFileSync(
-        //   consolidatedLogPath,
-        //   `${logEntry.timestamp.toISOString()} - ${logEntry.log}\n`,
-        //   "utf-8"
-        // ); // also writting the logs to consolidated path
-        // console.log("Written to consolidated log file.");
         await redisClient.lPush("logs", JSON.stringify(logEntry));
         console.log("Successfully pushed the error log to Queue");
         console.log(logEntry);

@@ -32,7 +32,7 @@ Log Message: ${logMessage}
 3. Suggest actionable steps, if applicable, to resolve the issue.`,
       },
     ],
-    model: "llama-3.3-70b-versatile",
+    model: "llama3-70b-8192",
     temperature: 0,
     stream: false,
     response_format: { type: "json_object" },

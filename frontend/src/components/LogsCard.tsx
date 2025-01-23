@@ -1,28 +1,28 @@
 import { AlertTriangle, Terminal } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import "../App.css";
-
-export interface Log {
-  id: string;
-  timestamp: string;
-  content: string;
-  type: "info" | "error";
-}
+import { LogType } from "@/App";
 
 export interface AnalysisType {
-  id: string;
-  logId: string;
-  content: string;
+  log_message: string;
+  breakdown: {
+    timestamp: string;
+    timezone: string;
+    module: string;
+    pci_device: string;
+    error_message: string;
+  };
+  possible_cause: string;
+  actionable_steps: string[];
 }
 
 export default function LogsCard({
   logs,
-  // analyses,
   setSelectedLogId,
   selectedLogId,
 }: {
-  logs: Log[];
-  // analyses: AnalysisType[];
+  logs: LogType[];
+  analyses: AnalysisType[];
   setSelectedLogId: React.Dispatch<React.SetStateAction<string | null>>;
   selectedLogId: string | null;
 }) {
@@ -75,11 +75,8 @@ export default function LogsCard({
                 : "bg-gray-700 hover:bg-gray-600"
             } ${selectedLogId === log.id ? "ring-2 ring-blue-500" : ""}`}
           >
-            {log.type === "error" ? (
-              <AlertTriangle className="text-red-500 shrink-0" />
-            ) : (
-              <Terminal className="text-gray-400 shrink-0" />
-            )}
+            <AlertTriangle className="text-red-500 shrink-0" />
+
             <span className="text-sm font-mono text-gray-300">
               {new Date(log.timestamp).toLocaleTimeString()}
             </span>

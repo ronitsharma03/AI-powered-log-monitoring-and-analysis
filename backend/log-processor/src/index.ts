@@ -1,9 +1,9 @@
 import express from "express";
 import cors from "cors";
 import { config } from "dotenv";
-import WebSocket from "ws";
 import { redisConnect } from "./config/redisConfig";
 import { logProcessor } from "./worker/logProcessor";
+import { WebSocketServer } from "ws";
 
 config();
 
@@ -13,26 +13,29 @@ const PORT = process.env.PORT;
 app.use(express.json());
 app.use(cors());
 
-let ws = new WebSocket("ws://localhost:3000") as WebSocket;
 
-ws.on("open", async function () {
-  console.log("Connected to the primary backend");
-  await logProcessor(ws);
-});
 
-ws.on("error", (error) => {
-  console.error("WebSocket error:", error);
-});
-
-ws.on('close', function(){
-  console.log("Connection closed")
-})
-
-app.listen(PORT, async () => {
+const httpServer = app.listen(PORT, async () => {
   console.log(`Worker is started at port ${PORT}`);
+  const wss = new WebSocketServer({server: httpServer});
   try {
     await redisConnect();
-    await logProcessor(ws);
+    try{
+      await logProcessor(wss);
+    }catch(error){
+      console.log("Error in WS server...")
+    }
+
+    wss.on("connection", async function (ws) {
+      ws.on("error", console.error);
+    
+      console.log("Websocket server started....");
+      
+      
+      ws.on("close", function () {
+        console.log("Client connection closed");
+      });
+    });
   } catch (error) {
     console.log(`Error connecting to the redisClient in Worker`);
   }

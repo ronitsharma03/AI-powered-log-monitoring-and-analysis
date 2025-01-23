@@ -7,17 +7,18 @@ interface logMessageType {
 export const saveLogsAndAnalysis = async (logMessage: logMessageType, logAnalysis: string) => {
     try{
         const jsonAnalysis = JSON.parse(logAnalysis);
-        await prisma.log.create({
+        const response = await prisma.log.create({
             data: {
                 logMessage: logMessage.element,
                 analysis: jsonAnalysis,
                 isAnalysed: logAnalysis ? "Success" : "Pending",
-                source: jsonAnalysis.breakdown.module
+                source: jsonAnalysis.breakdown.module || "No module found"
             }
         });
-
+        // console.log(response.id)
         console.log("Log and its analysis saved to database");
+        return response.id;
     }catch(error){
-        console.log("Error saving to the database");
+        console.log("Error saving to the database", error);
     }
 }
