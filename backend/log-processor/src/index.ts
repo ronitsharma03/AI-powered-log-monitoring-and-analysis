@@ -4,6 +4,7 @@ import { config } from "dotenv";
 import { redisConnect } from "./config/redisConfig";
 import { logProcessor } from "./worker/logProcessor";
 import { WebSocketServer } from "ws";
+import router from "./controllers/fetchAnalysis";
 
 config();
 
@@ -13,6 +14,8 @@ const PORT = process.env.PORT;
 app.use(express.json());
 app.use(cors());
 
+
+app.use("/api/v1", router);
 
 
 const httpServer = app.listen(PORT, async () => {
