@@ -3,27 +3,13 @@ import { useEffect, useRef, useState } from "react";
 import "../App.css";
 import { LogType } from "@/App";
 
-export interface AnalysisType {
-  log_message: string;
-  breakdown: {
-    timestamp: string;
-    timezone: string;
-    module: string;
-    pci_device: string;
-    error_message: string;
-  };
-  possible_cause: string;
-  actionable_steps: string[];
-}
-
 export default function LogsCard({
   logs,
   setSelectedLogId,
   selectedLogId,
 }: {
   logs: LogType[];
-  analyses: AnalysisType[];
-  setSelectedLogId: React.Dispatch<React.SetStateAction<string | null>>;
+  setSelectedLogId: React.Dispatch<React.SetStateAction<string>>;
   selectedLogId: string | null;
 }) {
   const logsEndRef = useRef<HTMLDivElement>(null);
@@ -50,6 +36,14 @@ export default function LogsCard({
     }
   }, [logs]);
 
+  // Remove duplicate logs based on logId
+  const uniqueLogs = logs.reduce((acc, log) => {
+    if (!acc.some((existingLog) => existingLog.logId === log.logId)) {
+      acc.push(log);
+    }
+    return acc;
+  }, [] as LogType[]);
+
   return (
     <div
       className="lg:col-span-2 bg-gray-800 pr-2"
@@ -60,33 +54,24 @@ export default function LogsCard({
         <Terminal size={24} className="text-blue-400" />
         <span>Logs</span>
       </h2>
-      <div className="space-y-2 max-h-[500px] overflow-y-auto logs-card-container pr-2">
-        {logs.map((log) => (
+      <div className="space-y-2 max-h-[500px] overflow-y-auto logs-card-container p-2">
+        {uniqueLogs.map((log) => (
           <button
-            key={log.id}
-            onClick={() => {
-              if (log.type === "error") {
-                setSelectedLogId(log.id);
-              }
-            }}
-            className={`w-full text-left p-3 rounded-lg flex items-center space-x-3 transition-colors duration-200 ${
-              log.type === "error"
-                ? "bg-red-900/30 hover:bg-red-900/40"
-                : "bg-gray-700 hover:bg-gray-600"
-            } ${selectedLogId === log.id ? "ring-2 ring-blue-500" : ""}`}
+            key={log.logId}
+            onClick={() => setSelectedLogId(log.logId)}
+            className={`w-full text-left p-3 rounded-lg flex flex-col space-y-2 transition-colors duration-200 bg-red-900/30 hover:bg-red-900/40 ${
+              selectedLogId === log.logId ? "ring-2 ring-blue-500" : ""
+            }`}
           >
-            <AlertTriangle className="text-red-500 shrink-0" />
-
-            <span className="text-sm font-mono text-gray-300">
-              {new Date(log.timestamp).toLocaleTimeString()}
-            </span>
-            <span
-              className={`${
-                log.type === "error" ? "text-red-500" : "text-gray-300"
-              } truncate`}
-            >
-              {log.content}
-            </span>
+            <div className="flex items-center space-x-3">
+              <AlertTriangle className="text-red-500 shrink-0" />
+              <span className="text-sm font-mono text-gray-300">
+                {new Date(log.timestamp).toLocaleTimeString()}
+              </span>
+            </div>
+            <div className="text-white text-[15px]">
+              {log.logMessage.split('"log":"')[1].split('"}')[0]}
+            </div>
           </button>
         ))}
         <div ref={logsEndRef} />

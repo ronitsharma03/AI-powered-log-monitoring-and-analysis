@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import TimeGraph from "./components/Timegraph";
 import ActivityMonitor from "./components/ActivityMonitor";
-import LogsCard, { AnalysisType, Log } from "./components/LogsCard";
+import LogsCard from "./components/LogsCard";
 import Analysis from "./components/Analysis";
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "./components/ui/resizable";
+import { AnalysisType, fetchLogAnalysis } from "./lib/actions";
 
 interface DataPoint {
   timestamp: number;
@@ -15,21 +16,21 @@ interface DataPoint {
 }
 
 export interface LogType {
-  log: {
-    timestamp: Date;
-    log: string;
-  };
-  analysis: string;
+  logId: string;
+  logMessage: string;
+  timestamp: string;
 }
 
 function App() {
   const [logs, setLogs] = useState<LogType[]>([]);
   const [socket, setSocket] = useState<WebSocket | null>(null);
+  const [selectedLogId, setSelectedLogId] = useState<string>("");
+  const [analysis, setAnalysis] = useState<AnalysisType | null>(null);
+  const [errorPoints, setErrorPoints] = useState<DataPoint[]>([]);
 
-  // WebSocket setup and message handling with auto-reconnect
   useEffect(() => {
     const createWebSocket = () => {
-      const socket = new WebSocket("ws://localhost:3000", "frontend");
+      const socket = new WebSocket("ws://localhost:3001");
 
       socket.onopen = () => {
         console.log("WebSocket connected");
@@ -39,7 +40,18 @@ function App() {
       socket.onmessage = (event) => {
         const jsonData = JSON.parse(event.data);
         console.log("Received data:", jsonData);
-        setLogs((logs) => [...logs, jsonData]); // Adding new log data
+
+        // Add new log data
+        setLogs((logs) => [...logs, jsonData]);
+
+        // Update error points for the TimeGraph
+        setErrorPoints((prevPoints) => [
+          ...prevPoints,
+          {
+            timestamp: new Date(jsonData.timestamp).getTime(),
+            errorCount: jsonData ? 1 : 0,
+          },
+        ]);
       };
 
       socket.onerror = (error) => {
@@ -49,35 +61,47 @@ function App() {
       socket.onclose = (event) => {
         console.log("WebSocket closed", event);
         // Reconnect if WebSocket closes
-        setTimeout(createWebSocket, 3000); // Reconnect after 3 seconds
+        setTimeout(createWebSocket, 5000);
       };
 
       return socket;
     };
 
-    const ws = createWebSocket(); // Initialize WebSocket connection
+    const ws = createWebSocket();
 
-    // Cleanup function to close WebSocket when the component unmounts
     return () => {
       if (ws) {
         ws.close();
         console.log("WebSocket connection closed");
       }
     };
-  }, []); // Empty dependency array to run this effect once on mount
+  }, []);
 
-  // Render connecting message while WebSocket is not yet connected
+  // Fetch analysis when a log is selected
+  useEffect(() => {
+    if (selectedLogId) {
+      const fetchAnalysis = async () => {
+        const analysisData = await fetchLogAnalysis(selectedLogId);
+        setAnalysis(analysisData);
+      };
+      fetchAnalysis();
+    }
+  }, [selectedLogId]);
+
   if (!socket) {
-    return <div>Connecting...</div>;
+    return (
+      <div className="flex items-center justify-center h-screen text-white">
+        Connecting...
+      </div>
+    );
   }
 
-  // Rendering the logs once WebSocket is connected
   return (
     <div className="min-h-screen w-full transition-colors duration-200 bg-gray-800">
       <div className="flex flex-col">
         <div className="bg-gray-800">
           <ActivityMonitor />
-          {/* <TimeGraph data={errorPoints} /> */}
+          <TimeGraph data={errorPoints} /> {/* Pass errorPoints to TimeGraph */}
         </div>
         <div className="px-8 flex max-sm:flex-col w-full max-sm:pt-10">
           <ResizablePanelGroup direction="horizontal" className="flex flex-col">
@@ -92,10 +116,7 @@ function App() {
             <ResizableHandle />
 
             <ResizablePanel>
-              {/* <Analysis
-                selectedLogId={selectedLogId}
-                analysisContent={selectedAnalysis}
-              /> */}
+              <Analysis selectedLogId={selectedLogId} analysis={analysis} />
             </ResizablePanel>
           </ResizablePanelGroup>
         </div>

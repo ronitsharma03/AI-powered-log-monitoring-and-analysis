@@ -19,11 +19,15 @@ export const logProcessor = async (wss: WebSocketServer) => {
       if (logsData) {
         console.log(logsData);
         const response: string = await main(logsData.element);
-        const logId = await saveLogsAndAnalysis(logsData, response);
-        console.log("ID of log: ", logId);
+        const dbResponse = await saveLogsAndAnalysis(logsData, response);
+        if(!dbResponse){
+          console.log(`Waiting for the db response...`);
+        }
+        console.log("ID of log: ", dbResponse?.id);
         const data = {
-          logId: logId,
-          logMessage: logsData.element
+          logId: dbResponse?.id,
+          logMessage: logsData.element,
+          timestamp: dbResponse?.timestamp
         }
         
         wss.clients.forEach((client) => {

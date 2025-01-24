@@ -28,6 +28,7 @@
     "react-virtuoso": "^4.12.3",
     "react-window": "^1.8.11",
     "recharts": "^2.15.0",
+    "recoil": "^0.7.7",
     "redis": "^4.7.0",
     "tailwind-merge": "^2.6.0",
     "tailwindcss": "^3.4.1",

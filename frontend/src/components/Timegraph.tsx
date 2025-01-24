@@ -1,5 +1,4 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   LineChart,
   Line,
@@ -20,49 +19,64 @@ interface TimeGraphProps {
 }
 
 export default function TimeGraph({ data }: TimeGraphProps) {
-  const [scrollOffset, setScrollOffset] = useState(0);
+  const [formattedData, setFormattedData] = useState<
+    { timestamp: string; errorCount: number }[]
+  >([]);
 
-  // Time range (24 hours) and calculate visible range
-  const now = new Date();
-  const endTime = new Date(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate(),
-    now.getHours()
-  ).getTime();
-  const startTime = endTime - 24 * 60 * 60 * 1000; // 24 hours ago
-  const visibleTimeWindow = 8 * 60 * 60 * 1000; // 8 hours visible at a time
-  const visibleStartTime = startTime + scrollOffset * visibleTimeWindow;
-  const visibleEndTime = visibleStartTime + visibleTimeWindow;
+  // Update formatted data whenever new logs are received
+  useEffect(() => {
+    const now = new Date().getTime();
+    const oneHourAgo = now - 60 * 60 * 1000; // 1 hour ago
 
-  // Filter visible data
-  const visibleData = data.filter(
-    (point) =>
-      point.timestamp >= visibleStartTime && point.timestamp <= visibleEndTime
-  );
+    // Filter data to include only logs from the past 1 hour
+    const filteredData = data.filter((point) => point.timestamp >= oneHourAgo);
 
-  // Format data for the chart
-  const formattedData = visibleData.map((point) => ({
-    timestamp: new Date(point.timestamp).toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-    }),
-    errorCount: point.errorCount,
-  }));
+    // Format data for the chart
+    const newFormattedData = filteredData.map((point) => ({
+      timestamp: new Date(point.timestamp).toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit", // Include seconds for more granularity
+      }),
+      errorCount: point.errorCount,
+    }));
+
+    setFormattedData(newFormattedData);
+  }, [data]);
+
+  // Custom Tooltip
+  const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-gray-800 p-3 rounded-lg shadow-lg border border-gray-700">
+          <p className="text-sm text-gray-300">{`Time: ${label}`}</p>
+          <p className="text-sm text-red-500">{`Errors: ${payload[0].value}`}</p>
+        </div>
+      );
+    }
+    return null;
+  };
 
   return (
-    <div className="relative border-b mb-6 ">
+    <div className="relative border-b mb-6 pb-4">
       <ResponsiveContainer width="100%" height={200}>
-        <LineChart data={formattedData}>
+        <LineChart data={formattedData} margin={{ top: 20 }}> {/* Add margin to the top */}
           <CartesianGrid strokeDasharray="3 3" stroke={"#4b5563"} />
-          <XAxis dataKey="timestamp" tick={{ fill: "#e5e7eb" }} />
-          <YAxis tick={{ fill: "#e5e7eb" }} allowDecimals={true} />
-          <Tooltip
-            contentStyle={{
-              backgroundColor: "#1f2937",
-              color: "#e5e7eb",
+          <XAxis
+            dataKey="timestamp"
+            tick={{
+              fill: "#e5e7eb",
+              fontSize: "14px", // Reduce font size
+              dy: 7, // Add padding below the X-axis labels
             }}
+            interval={Math.ceil(formattedData.length / 10)} // Adjust interval for better spacing
           />
+          <YAxis
+            tick={{ fill: "#e5e7eb", fontSize: "14px" }} // Reduce font size for Y-axis
+            allowDecimals={false}
+            domain={[0, "auto"]}
+          />
+          <Tooltip content={<CustomTooltip />} />
           <Line
             type="monotone"
             dataKey="errorCount"
@@ -77,30 +91,14 @@ export default function TimeGraph({ data }: TimeGraphProps) {
                   stroke="#ef4444"
                   fill="#ef4444"
                 />
-              ) : <React.Fragment />
+              ) : (
+                <React.Fragment />
+              )
             }
             activeDot={{ r: 6 }}
           />
         </LineChart>
       </ResponsiveContainer>
-
-      {/* Scroll Buttons */}
-      <div className="mb-8 mr-2 absolute bottom-0 right-0 flex items-center space-x-2 p-2 mt-20">
-        <button
-          onClick={() => setScrollOffset(Math.max(0, scrollOffset - 1))}
-          className="p-1 rounded-lg bg-gray-700 hover:bg-gray-600 text-gray-300"
-          disabled={scrollOffset === 0}
-        >
-          <ChevronLeft size={20} />
-        </button>
-        <button
-          onClick={() => setScrollOffset(Math.min(2, scrollOffset + 1))}
-          className="p-1 rounded-lg bg-gray-700 hover:bg-gray-600 text-gray-300"
-          disabled={scrollOffset === 2}
-        >
-          <ChevronRight size={20} />
-        </button>
-      </div>
     </div>
   );
 }

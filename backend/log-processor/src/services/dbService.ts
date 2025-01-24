@@ -12,12 +12,15 @@ export const saveLogsAndAnalysis = async (logMessage: logMessageType, logAnalysi
                 logMessage: logMessage.element,
                 analysis: jsonAnalysis,
                 isAnalysed: logAnalysis ? "Success" : "Pending",
-                source: jsonAnalysis.breakdown.module || "No module found"
+                source: jsonAnalysis.breakdown.module || "Error finding module"
             }
         });
         // console.log(response.id)
         console.log("Log and its analysis saved to database");
-        return response.id;
+        return {
+            id: response.id,
+            timestamp: response.timestamp
+        };
     }catch(error){
         console.log("Error saving to the database", error);
     }
