@@ -40,7 +40,7 @@ flowchart LR
     end
     
     subgraph Frontend
-        F[User] --> |Fetch Analyzed Logs| G(Primary Backend API)
+        F[User] --> |Fetch Analyzed Logs| G(Worker Backend API)
         G --> |Retrieve from DB| E
     end
 ```
