@@ -73,8 +73,8 @@ Make sure you have the following installed:
 
 ### **📂 Clone the Repository**
 ```bash
-git clone https://github.com/ronitsharma03/AI-smart-log-collector
-cd ai-log-monitor
+git clone https://github.com/ronitsharma03/AI-powered-log-monitoring-and-analysis
+cd AI-powered-log-monitoring-and-analysis
 ```
 
 ### **🔧 Setting up the Services**
