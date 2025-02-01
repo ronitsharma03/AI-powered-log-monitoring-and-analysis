@@ -1,21 +1,32 @@
-# 🚀 AI-Powered Log Monitoring & Analysis System
+# AI-Powered Log Monitoring and Analysis System
 
 ## 📌 Project Overview
-This project is an **AI-powered log monitoring and analysis system** designed for **Veritas** to automate the detection and contextual analysis of error logs. It enhances **system reliability** and **incident response efficiency** by leveraging **machine learning**, **log queueing**, and **real-time WebSocket communication**.
+This project is designed to **monitor and analyze error logs** in an organization's infrastructure using AI-powered insights. The system consists of multiple components that work together to detect and analyze critical log events in real time, enhancing security and operational efficiency.
 
----
-
-## 🎯 Key Features
-✅ **Automated Log Collection** – Monitors critical log files for real-time updates.  
-✅ **AI-Based Log Analysis** – Uses an LLM (Large Language Model) to analyze logs.  
-✅ **Queue-Based Processing** – Logs are sent to a Redis queue for asynchronous handling.  
-✅ **PostgreSQL Storage** – Stores logs and their AI-generated insights for retrieval.  
-✅ **WebSocket Communication** – Primary backend and worker communicate efficiently over WebSockets.  
-✅ **Scalable Architecture** – Easily extendable to monitor additional logs or integrate new AI models.  
-
----
+## 🎯 Aim of the Project
+The primary goal of this project is to **automate log monitoring and analysis** while ensuring that the organization's master machine remains **secure and unexposed** to external threats. By leveraging **AI-driven insights**, this system helps in **detecting anomalies**, improving incident response time, and reducing **manual log analysis efforts**.
 
 ## 🏗️ Project Architecture
+### **🖥️ Primary Backend (Log Collector Service)**
+- Runs on the organization's **master machine** to monitor critical locations for **error logs** like:
+  - **Syslogs, Auth logs, Error logs, Dpkg logs, API logs**
+- Filters and pushes **only error-related logs** to **Redis queue** for processing.
+- Ensures that the **master machine remains safe** from exposure over the internet, protecting it from potential attackers.
+
+### **🔧 Log Processing Worker**
+- A separate **backend service** that does the heavy lifting.
+- **Pulls logs** from the Redis queue and sends them to an **LLM** for AI-driven insights.
+- **Stores analyzed logs** and insights in a **PostgreSQL database**.
+- Maintains a **WebSocket connection** to the frontend for real-time updates.
+
+### **📊 Frontend (Real-time Log Dashboard)**
+- Displays logs and their analysis in an interactive UI.
+- Three key sections:
+  - **Graph visualization** of log trends over time.
+  - **Real-time logs feed** that updates as new logs arrive.
+  - **Error analysis section**, where clicking a log fetches its AI-generated analysis in real time.
+
+## 🏗️ System Architecture
 ```mermaid
 flowchart LR
     subgraph Primary Backend
@@ -34,109 +45,67 @@ flowchart LR
     end
 ```
 
----
+## 🚀 **Getting Started**
+### **Prerequisites**
+Make sure you have the following installed:
+- **Node.js** (v18+)
+- **Docker**
+- **Redis** (Standalone or Docker)
+- **PostgreSQL** (Standalone or Docker)
 
-## ⚙️ Tech Stack
-- **Backend**: Node.js, Express.js
-- **Worker**: Node.js, Prisma, WebSockets
-- **Database**: PostgreSQL
-- **Queue**: Redis
-- **AI Model**: Large Language Model (LLM)
-
----
-
-## 📂 Folder Structure
-```
-backend/
-├── primary-backend/                # Primary Backend (Express API, Log Collection, WebSockets)
-│   ├── src/
-│   │   ├── controllers/            # Handles API logic
-│   │   ├── services/               # Business logic for log processing
-│   │   ├── routes/                 # API Routes
-│   │   ├── app.ts                  # Main entry point
-│   ├── dist/                       # Compiled TypeScript
-│   └── package.json                # Dependencies & scripts
-└── log-processor/                  # Worker (Log queue processing, LLM interaction)
-    ├── src/
-    │   ├── services/               # Queue consumption, LLM processing
-    │   ├── workers/                # Worker logic
-    │   ├── app.ts                  # Main entry for worker
-    ├── dist/
-    └── package.json
+### **📂 Clone the Repository**
+```bash
+git clone https://github.com/ronitsharma03/AI-smart-log-collector
+cd ai-log-monitor
 ```
 
----
+### **🔧 Setting up the Services**
 
-## 🚀 Setup & Installation
-### 1️⃣ Clone the Repository
-```sh
-git clone https://github.com/your-username/log-monitoring-ai.git
-cd log-monitoring-ai
+#### **1️⃣ Using Docker (Recommended)**
+```bash
+docker run -d -e POSTGRES_PASSWORD=<mysecretpassword> -p 5432:5432 postgres
+docker run -d -p 6379:6379 redis
 ```
-### 2️⃣ Install Dependencies
-```sh
-cd backend/primary-backend
-npm install
 
+#### **2️⃣ Running Services Manually**
+If you are running **Redis and PostgreSQL locally**, make sure they are up and running before proceeding.
+
+##### **🔹 Install dependencies**
+```bash
+cd primary-backend && npm install
+cd ../log-processor && npm install
+cd ../frontend && npm install
+```
+
+##### **🔹 Setup Database (Prisma Migration)**
+```bash
+cd primary-backend
+npx prisma migrate dev --name 
+npx prisma generate
+```
+
+##### **🔹 Start the services**
+```bash
+# Start Primary Backend (Log Collector)
+cd primary-backend
+npm run dev
+
+# Start Log Processor (Worker)
 cd ../log-processor
-npm install
-```
-### 3️⃣ Set Up Environment Variables
-Create a `.env` file in both **primary-backend** and **log-processor** directories.
-```env
-# PostgreSQL Database
-DATABASE_URL=postgresql://user:password@localhost:5432/logs_db
-
-# Redis Configuration
-REDIS_HOST=localhost
-REDIS_PORT=6379
-
-# WebSocket Configuration
-WS_SERVER_URL=ws://localhost:4000
-```
-### 4️⃣ Start the Services
-#### Start Redis (if not running)
-```sh
-redis-server
-```
-#### Start Primary Backend
-```sh
-cd backend/primary-backend
 npm run dev
-```
-#### Start Worker (Log Processor)
-```sh
-cd backend/log-processor
+
+# Start Frontend
+cd ../frontend
 npm run dev
 ```
 
----
-
-## 📊 How It Works
-1️⃣ **Logs are collected** from specified system directories.  
-2️⃣ **Primary backend pushes logs** to the Redis queue.  
-3️⃣ **Worker fetches logs** from Redis, sends them to an **LLM for analysis**.  
-4️⃣ **Analyzed logs are stored** in PostgreSQL.  
-5️⃣ **Frontend fetches logs** via API/WebSockets for real-time monitoring.  
-
----
-
-## 🔥 Future Enhancements
-- [ ] **Alert System**: Trigger real-time alerts for critical errors.
-- [ ] **Dashboard**: Build a UI for visualizing logs and analytics.
-- [ ] **Multi-Source Integration**: Monitor logs from cloud services.
+## ⚡ **Key Features**
+✅ Secure log collection from critical sources.
+✅ AI-powered log analysis using an LLM.
+✅ Real-time visualization of logs and insights.
+✅ WebSocket-based live data updates.
+✅ Scalable architecture with Redis-based queueing.
+✅ PostgreSQL-backed persistent storage.
 
 ---
-
-## 🤝 Contributing
-Contributions are welcome! Feel free to open an **issue** or submit a **pull request**. 
-
----
-
-## 📜 License
-This project is licensed under the **MIT License**. See [LICENSE](./LICENSE) for details.
-
----
-
-## 📞 Contact
-For any queries, reach out to **Your Name** at [your-email@example.com](mailto:your-email@example.com).
+📌 **Note:** This system is designed specifically for Veritas to enhance its **log monitoring efficiency**, **reduce manual overhead**, and **ensure infrastructure security**. 🚀
