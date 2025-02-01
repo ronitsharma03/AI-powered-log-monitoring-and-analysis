@@ -46,8 +46,7 @@ export default function Analysis({ selectedLogId, analysis }: AnalysisProps) {
             </div>
           ) : (
             <div className="w-full h-full flex justify-center items-center">
-              <span className="text-xl text-white">Fetching Analysis </span>
-              <p className="text-gray-400 border-[7px] h-5 w-5 rounded-full animate-spin border-dotted ml-2"></p>
+              <p className="text-gray-400 ">Fetching analysis....</p>
             </div>
           )
         ) : (
