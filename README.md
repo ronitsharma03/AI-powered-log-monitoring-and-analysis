@@ -26,6 +26,24 @@ The primary goal of this project is to **automate log monitoring and analysis** 
   - **Real-time logs feed** that updates as new logs arrive.
   - **Error analysis section**, where clicking a log fetches its AI-generated analysis in real time.
 
+## 🛠️ Tech Stack
+
+- **Backend**
+  - Node.js
+  - TypeScript
+  - Express
+  - Redis
+  - PostgreSQL
+  - Prisma ORM
+  - WebSocket
+
+- **Frontend**
+  - React
+  - TypeScript
+  - Tailwind CSS
+  - Recharts
+  - shadcn/ui components
+
 ## 🏗️ System Architecture
 ```mermaid
 flowchart LR
@@ -100,12 +118,19 @@ npm run dev
 ```
 
 ## ⚡ **Key Features**
-✅ Secure log collection from critical sources.
-✅ AI-powered log analysis using an LLM.
-✅ Real-time visualization of logs and insights.
-✅ WebSocket-based live data updates.
-✅ Scalable architecture with Redis-based queueing.
-✅ PostgreSQL-backed persistent storage.
+- **Real-time Log Monitoring**
+  - Automatic error detection
+  - Live log streaming
+  - WebSocket-based updates
+
+- **AI-Powered Analysis**
+  - Root cause analysis
+  - Actionable recommendations
+
+- **Interactive Dashboard**
+  - Time-series visualization
+  - Error frequency tracking
+  - Detailed error analysis view
 
 ---
 📌 **Note:** This system is designed specifically for Veritas to enhance its **log monitoring efficiency**, **reduce manual overhead**, and **ensure infrastructure security**. 🚀
