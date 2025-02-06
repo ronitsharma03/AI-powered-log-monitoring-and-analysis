@@ -52,14 +52,15 @@ flowchart LR
     end
     
     subgraph Worker
-        B --> |Fetch Logs| C(Log Processor)
+        B --> |Pull Logs| C(Log Processor)
         C --> |Analyze Logs| D(LLM)
         D --> |Store Analysis| E(PostgreSQL)
     end
     
     subgraph Frontend
-        F[User] --> |Fetch Analyzed Logs| G(Worker Backend API)
+        F[User] --> |Fetch Analysis of Logs| G(Log Processor API)
         G --> |Retrieve from DB| E
+        C --> |WebSocket Connection | F
     end
 ```
 
