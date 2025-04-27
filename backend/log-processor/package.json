@@ -16,11 +16,13 @@
   "dependencies": {
     "@prisma/client": "^6.2.1",
     "@types/cors": "^2.8.17",
+    "@types/node-cron": "^3.0.11",
     "@types/ws": "^8.5.13",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "groq-sdk": "^0.12.0",
+    "node-cron": "^3.0.3",
     "nodemailer": "^6.10.1",
     "prisma": "^6.2.1",
     "redis": "^4.7.0",

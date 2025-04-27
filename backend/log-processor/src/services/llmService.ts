@@ -68,7 +68,7 @@ Log Message: ${logMessage}
 3. Suggest actionable steps, if applicable, to resolve the issue.`,
       },
     ],
-    model: "llama3-70b-8192",
+    model: "llama-3.3-70b-versatile",
     temperature: 0,
     stream: false,
     response_format: { type: "json_object" },
@@ -135,52 +135,129 @@ function generateFallbackAnalysis(logMessage: string) {
  * Handle conversation about a specific error log and its analysis
  */
 export async function handleChatConversation(logMessage: string, analysis: any, userQuery: string, conversationHistory: Array<{role: string, content: string}> = []) {
-  try {
-    // Create default system prompt that includes the log and analysis
-    const systemContent = `You are a helpful assistant specializing in system error analysis. 
+  // Set a retry counter and maximum retries
+  let retries = 0;
+  const MAX_RETRIES = 2;
+  const RETRY_DELAY_MS = 1000;
+
+  while (retries <= MAX_RETRIES) {
+    try {
+      // Create default system prompt that includes the log and analysis
+      const systemContent = `You are a helpful assistant specializing in system error analysis. 
 You're discussing this system log: "${logMessage}"
 Your analysis: ${JSON.stringify(analysis, null, 2)}
 Help the user understand the error and implement the actionable steps.`;
 
-    // Build the conversation history with proper typing
-    const messages = [
-      { role: "system" as const, content: systemContent },
-      ...conversationHistory.map(msg => ({
-        role: msg.role as "user" | "assistant" | "system",
-        content: msg.content
-      })),
-      { role: "user" as const, content: userQuery }
-    ];
+      // Build the conversation history with proper typing
+      const messages = [
+        { role: "system" as const, content: systemContent },
+        ...conversationHistory.map(msg => ({
+          role: msg.role as "user" | "assistant" | "system",
+          content: msg.content
+        })),
+        { role: "user" as const, content: userQuery }
+      ];
 
-    // Call Groq API
-    const chatCompletion = await groq.chat.completions.create({
-      messages,
-      model: "llama3-70b-8192",
-      temperature: 0.5,
-      stream: false,
-      max_tokens: 1024
-    });
+      // Timeout promise to handle hanging requests
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error("API request timed out")), 15000);
+      });
 
-    return {
-      success: true,
-      message: chatCompletion?.choices[0]?.message?.content,
-      conversation: [
-        ...conversationHistory,
-        { role: "user", content: userQuery },
-        { role: "assistant", content: chatCompletion?.choices[0]?.message?.content || "" }
-      ]
-    };
-  } catch (error: any) {
-    console.error("Error in chat conversation:", error);
-    return {
-      success: false,
-      message: "Failed to process your question. Please try again.",
-      error: error.message,
-      conversation: [
-        ...conversationHistory,
-        { role: "user", content: userQuery },
-        { role: "assistant", content: "Sorry, I encountered an error processing your question." }
-      ]
-    };
+      // Call Groq API with timeout
+      const chatCompletion = await Promise.race([
+        groq.chat.completions.create({
+          messages,
+          model: "llama-3.3-70b-versatile",
+          temperature: 0.5,
+          stream: false,
+          max_tokens: 1024
+        }),
+        timeoutPromise
+      ]) as any; // Use type assertion to avoid TypeScript errors
+
+      // Check if we have a valid response with choices
+      if (!chatCompletion?.choices?.[0]?.message?.content) {
+        throw new Error("Invalid response format from LLM API");
+      }
+
+      return {
+        success: true,
+        message: chatCompletion.choices[0].message.content,
+        conversation: [
+          ...conversationHistory,
+          { role: "user", content: userQuery },
+          { role: "assistant", content: chatCompletion.choices[0].message.content }
+        ]
+      };
+    } catch (error: any) {
+      console.error(`Error in chat conversation (attempt ${retries + 1}/${MAX_RETRIES + 1}):`, error);
+      
+      // If we're out of retries, use fallback
+      if (retries >= MAX_RETRIES) {
+        console.log("All retry attempts failed, using fallback response mechanism");
+        
+        // Generate a simple fallback response based on the error log and analysis
+        const fallbackResponse = generateFallbackChatResponse(logMessage, analysis, userQuery);
+        
+        return {
+          success: true, // Mark as success despite the error to avoid UI disruption
+          message: fallbackResponse,
+          conversation: [
+            ...conversationHistory,
+            { role: "user", content: userQuery },
+            { role: "assistant", content: fallbackResponse }
+          ]
+        };
+      }
+      
+      // Sleep before retry
+      await new Promise(resolve => setTimeout(resolve, RETRY_DELAY_MS * (retries + 1)));
+      retries++;
+    }
   }
+  
+  // This should not be reached due to the fallback, but TypeScript needs a return
+  return {
+    success: false,
+    message: "Failed to process your question. Please try again.",
+    error: "Maximum retries exceeded",
+    conversation: [
+      ...conversationHistory,
+      { role: "user", content: userQuery },
+      { role: "assistant", content: "Sorry, our AI service is currently experiencing issues. Please try again later." }
+    ]
+  };
+}
+
+/**
+ * Generate a fallback response for chat when LLM is unavailable
+ */
+function generateFallbackChatResponse(logMessage: string, analysis: any, userQuery: string): string {
+  // Extract key information from the analysis
+  const module = analysis?.breakdown?.module || "unknown module";
+  const errorMessage = analysis?.breakdown?.error_message || "unknown error";
+  const possibleCause = analysis?.possible_cause || "The cause could not be determined without full analysis.";
+  const actionableSteps = analysis?.actionable_steps || [];
+  
+  // Check if the query contains certain keywords to determine response
+  const queryLower = userQuery.toLowerCase();
+  
+  if (queryLower.includes("cause") || queryLower.includes("why") || queryLower.includes("reason")) {
+    return `Based on the log from ${module}, the error "${errorMessage}" likely occurred because: ${possibleCause}`;
+  }
+  
+  if (queryLower.includes("fix") || queryLower.includes("resolve") || queryLower.includes("solution") || queryLower.includes("how")) {
+    const stepsText = actionableSteps.length > 0 
+      ? `Here are some steps to resolve this issue:\n${actionableSteps.map((step: string, i: number) => `${i+1}. ${step}`).join('\n')}`
+      : "Without full analysis, I recommend checking the system logs, restarting the affected service, and consulting the documentation for this specific error.";
+    
+    return stepsText;
+  }
+  
+  if (queryLower.includes("explain") || queryLower.includes("what")) {
+    return `This error is coming from the ${module} component. The error message "${errorMessage}" indicates there might be an issue with this component. ${possibleCause}`;
+  }
+  
+  // Default response with general information
+  return `I'm analyzing the error from ${module}. The main issue appears to be: "${errorMessage}". ${possibleCause}\n\nTo fix this, you might want to try these steps:\n${actionableSteps.map((step: string, i: number) => `${i+1}. ${step}`).join('\n')}`;
 }

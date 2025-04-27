@@ -1,11 +1,12 @@
 import { checkAndSendScheduledEmails } from './services/emailScheduler';
-import { PrismaClient } from '@prisma/client';
+// import { PrismaClient } from '@prisma/client';
+import prisma from './config/prismaConfig';
 import { config } from 'dotenv';
 
 // Load environment variables
 config();
 
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient();
 
 async function testScheduler() {
   console.log('Testing email scheduler at', new Date().toLocaleString());

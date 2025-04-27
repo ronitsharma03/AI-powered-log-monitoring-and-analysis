@@ -1,0 +1,175 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          line-height: 1.6;
+          color: #333;
+          max-width: 900px;
+          margin: 0 auto;
+          padding: 20px;
+        }
+        h1, h2, h3 {
+          color: #2563eb;
+        }
+        .header {
+          background-color: #f3f4f6;
+          padding: 15px;
+          border-radius: 5px;
+          margin-bottom: 20px;
+          border-left: 5px solid #3b82f6;
+        }
+        .module {
+          margin-bottom: 30px;
+          padding: 15px;
+          background-color: #f9fafb;
+          border-radius: 5px;
+        }
+        .module-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-bottom: 1px solid #e5e7eb;
+          padding-bottom: 10px;
+          margin-bottom: 15px;
+        }
+        .module-count {
+          background-color: #dbeafe;
+          color: #1e40af;
+          padding: 5px 10px;
+          border-radius: 20px;
+          font-size: 14px;
+        }
+        .log-entry {
+          background-color: #fff;
+          border-left: 3px solid #ef4444;
+          padding: 10px;
+          margin-bottom: 10px;
+          font-family: monospace;
+          white-space: pre-wrap;
+          word-break: break-word;
+          font-size: 13px;
+        }
+        .timestamp {
+          color: #6b7280;
+          font-size: 12px;
+        }
+        .summary {
+          margin-top: 30px;
+          padding: 15px;
+          background-color: #ecfdf5;
+          border-radius: 5px;
+        }
+        .date-range {
+          font-size: 14px;
+          color: #4b5563;
+          margin-top: 5px;
+        }
+        .download-note {
+          margin-top: 20px;
+          padding: 10px;
+          background-color: #fffbeb;
+          border-left: 3px solid #f59e0b;
+          font-size: 14px;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="header">
+        <h1>System Error Log Report</h1>
+        <p>Generated on Monday, April 28, 2025</p>
+        <p class="date-range">Report covers today (Apr 28, 2025)</p>
+      </div>
+      
+      <p>This report contains the most recent system error logs grouped by module. Below is a summary of errors detected in each module.</p>
+      
+      <h2>Error Logs by Module</h2>
+  
+      <div class="module">
+        <div class="module-header">
+          <h3>NetworkManager</h3>
+          <span class="module-count">4 errors</span>
+        </div>
+        
+        <p>Recent error logs (3 of 4):</p>
+    
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 12:56:39 AM</div>
+          {"timestamp":"2025-04-27T19:26:37.300Z","log":"2025-04-28T00:56:37.299652+05:30 ronit-pavilion NetworkManager[1463]: <warn>  [1745781997.2995] dns-sd-resolved[c34c88b7ea349131]: send-updates SetLinkDomains@4 failed: GDBus.Error:org.freedesktop.resolve1.NoSuchLink: Link 4 not known"}
+        </div>
+      
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 12:55:41 AM</div>
+          {"timestamp":"2025-04-27T19:25:38.819Z","log":"2025-04-28T00:55:38.818614+05:30 ronit-pavilion NetworkManager[1463]: <warn>  [1745781938.8184] platform-linux: do-change-link[2]: failure 110 (Connection timed out)"}
+        </div>
+      
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 12:55:40 AM</div>
+          {"timestamp":"2025-04-27T19:25:38.679Z","log":"2025-04-28T00:55:38.676619+05:30 ronit-pavilion NetworkManager[1463]: <warn>  [1745781938.6764] platform-linux: do-change-link[2]: failure 110 (Connection timed out)"}
+        </div>
+      </div>
+      <div class="module">
+        <div class="module-header">
+          <h3>tracker-miner-fs-3</h3>
+          <span class="module-count">3 errors</span>
+        </div>
+        
+        <p>Recent error logs (3 of 3):</p>
+    
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 12:56:03 AM</div>
+          {"timestamp":"2025-04-27T19:26:03.052Z","log":"2025-04-28T00:56:03.051605+05:30 ronit-pavilion tracker-miner-fs-3[35239]: (tracker-extract-3:35239): GLib-GIO-WARNING **: 00:56:03.050: Error creating IO channel for /proc/self/mountinfo: Invalid argument (g-io-error-quark, 13)"}
+        </div>
+      
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 12:55:51 AM</div>
+          {"timestamp":"2025-04-27T19:25:50.959Z","log":"2025-04-28T00:55:50.959191+05:30 ronit-pavilion tracker-miner-fs-3[34824]: (tracker-extract-3:34824): GLib-GIO-WARNING **: 00:55:50.958: Error creating IO channel for /proc/self/mountinfo: Invalid argument (g-io-error-quark, 13)"}
+        </div>
+      
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 12:55:20 AM</div>
+          {"timestamp":"2025-04-27T19:25:19.964Z","log":"2025-04-28T00:55:19.962085+05:30 ronit-pavilion tracker-miner-fs-3[33371]: (tracker-extract-3:33371): GLib-GIO-WARNING **: 00:55:19.961: Error creating IO channel for /proc/self/mountinfo: Invalid argument (g-io-error-quark, 13)"}
+        </div>
+      </div>
+      <div class="module">
+        <div class="module-header">
+          <h3>kernel</h3>
+          <span class="module-count">1 errors</span>
+        </div>
+        
+        <p>Recent error logs (1 of 1):</p>
+    
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 12:55:41 AM</div>
+          {"timestamp":"2025-04-27T19:25:38.679Z","log":"2025-04-28T00:55:38.677306+05:30 ronit-pavilion kernel: rtw89_8852be 0000:01:00.0: mac init fail, ret:-110"}
+        </div>
+      </div>
+      <div class="module">
+        <div class="module-header">
+          <h3>rtw89_8852be</h3>
+          <span class="module-count">1 errors</span>
+        </div>
+        
+        <p>Recent error logs (1 of 1):</p>
+    
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 12:55:42 AM</div>
+          {"timestamp":"2025-04-27T19:25:38.820Z","log":"2025-04-28T00:55:38.819307+05:30 ronit-pavilion kernel: rtw89_8852be 0000:01:00.0: mac init fail, ret:-110"}
+        </div>
+      </div>
+      <div class="summary">
+        <h2>Summary</h2>
+        <p><strong>Total Errors:</strong> 9</p>
+        <p><strong>Modules Affected:</strong> 4</p>
+        <p><strong>Report Period:</strong> Report covers today (Apr 28, 2025)</p>
+        <p>For more detailed analysis, please visit the System Log Analyzer dashboard.</p>
+      </div>
+      
+      <div class="download-note">
+        <p><strong>Note:</strong> You can download this report as an HTML file from the Settings panel in the System Log Analyzer dashboard.</p>
+      </div>
+    </body>
+    </html>
+  

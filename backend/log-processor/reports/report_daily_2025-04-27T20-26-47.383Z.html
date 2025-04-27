@@ -1,0 +1,383 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          line-height: 1.6;
+          color: #333;
+          max-width: 900px;
+          margin: 0 auto;
+          padding: 20px;
+        }
+        h1, h2, h3 {
+          color: #2563eb;
+        }
+        .header {
+          background-color: #f3f4f6;
+          padding: 15px;
+          border-radius: 5px;
+          margin-bottom: 20px;
+          border-left: 5px solid #3b82f6;
+        }
+        .module {
+          margin-bottom: 30px;
+          padding: 15px;
+          background-color: #f9fafb;
+          border-radius: 5px;
+        }
+        .module-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-bottom: 1px solid #e5e7eb;
+          padding-bottom: 10px;
+          margin-bottom: 15px;
+        }
+        .module-count {
+          background-color: #dbeafe;
+          color: #1e40af;
+          padding: 5px 10px;
+          border-radius: 20px;
+          font-size: 14px;
+        }
+        .log-entry {
+          background-color: #fff;
+          border-left: 3px solid #ef4444;
+          padding: 10px;
+          margin-bottom: 10px;
+          font-family: monospace;
+          white-space: pre-wrap;
+          word-break: break-word;
+          font-size: 13px;
+        }
+        .timestamp {
+          color: #6b7280;
+          font-size: 12px;
+        }
+        .summary {
+          margin-top: 30px;
+          padding: 15px;
+          background-color: #ecfdf5;
+          border-radius: 5px;
+        }
+        .date-range {
+          font-size: 14px;
+          color: #4b5563;
+          margin-top: 5px;
+        }
+        .download-note {
+          margin-top: 20px;
+          padding: 10px;
+          background-color: #fffbeb;
+          border-left: 3px solid #f59e0b;
+          font-size: 14px;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="header">
+        <h1>System Error Log Report</h1>
+        <p>Generated on Monday, April 28, 2025</p>
+        <p class="date-range">Report covers today (Apr 28, 2025)</p>
+      </div>
+      
+      <p>This report contains the most recent system error logs grouped by module. Below is a summary of errors detected in each module.</p>
+      
+      <h2>Error Logs by Module</h2>
+  
+      <div class="module">
+        <div class="module-header">
+          <h3>tracker-miner-fs-3</h3>
+          <span class="module-count">23 errors</span>
+        </div>
+        
+        <p>Recent error logs (3 of 23):</p>
+    
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 1:52:19 AM</div>
+          {"timestamp":"2025-04-27T20:22:18.048Z","log":"2025-04-28T01:52:18.047619+05:30 ronit-pavilion tracker-miner-fs-3[116050]: (tracker-extract-3:116050): GLib-GIO-WARNING **: 01:52:18.046: Error creating IO channel for /proc/self/mountinfo: Invalid argument (g-io-error-quark, 13)"}
+        </div>
+      
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 1:52:00 AM</div>
+          {"timestamp":"2025-04-27T20:21:59.588Z","log":"2025-04-28T01:51:59.588008+05:30 ronit-pavilion tracker-miner-fs-3[115708]: (tracker-extract-3:115708): GLib-GIO-WARNING **: 01:51:59.587: Error creating IO channel for /proc/self/mountinfo: Invalid argument (g-io-error-quark, 13)"}
+        </div>
+      
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 1:46:31 AM</div>
+          {"timestamp":"2025-04-27T20:16:29.660Z","log":"2025-04-28T01:46:29.659595+05:30 ronit-pavilion tracker-miner-fs-3[109859]: (tracker-extract-3:109859): GLib-GIO-WARNING **: 01:46:29.658: Error creating IO channel for /proc/self/mountinfo: Invalid argument (g-io-error-quark, 13)"}
+        </div>
+      </div>
+      <div class="module">
+        <div class="module-header">
+          <h3>NetworkManager</h3>
+          <span class="module-count">18 errors</span>
+        </div>
+        
+        <p>Recent error logs (3 of 18):</p>
+    
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 1:47:14 AM</div>
+          {"timestamp":"2025-04-27T20:17:08.734Z","log":"2025-04-28T01:47:08.733669+05:30 ronit-pavilion NetworkManager[1463]: <warn>  [1745785028.7335] platform-linux: do-change-link[2]: failure 110 (Connection timed out)"}
+        </div>
+      
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 1:47:13 AM</div>
+          {"timestamp":"2025-04-27T20:17:08.592Z","log":"2025-04-28T01:47:08.591058+05:30 ronit-pavilion NetworkManager[1463]: <warn>  [1745785028.5908] platform-linux: do-change-link[2]: failure 110 (Connection timed out)"}
+        </div>
+      
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 1:47:10 AM</div>
+          {"timestamp":"2025-04-27T20:17:08.592Z","log":"2025-04-28T01:47:08.591058+05:30 ronit-pavilion NetworkManager[1463]: <warn>  [1745785028.5908] platform-linux: do-change-link[2]: failure 110 (Connection timed out)"}
+        </div>
+      </div>
+      <div class="module">
+        <div class="module-header">
+          <h3>com.docker.backend</h3>
+          <span class="module-count">15 errors</span>
+        </div>
+        
+        <p>Recent error logs (3 of 15):</p>
+    
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 1:52:33 AM</div>
+          {"timestamp":"2025-04-27T20:22:28.307Z","log":"2025-04-28T01:52:28.307029+05:30 ronit-pavilion com.docker.backend[25541]: [20:22:28.306438626Z][main.apiproxy         ][W] Error forwarding raw stream from dockerd: write unix /home/ronit/.docker/desktop/docker.sock->@: write: broken pipe"}
+        </div>
+      
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 1:52:31 AM</div>
+          {"timestamp":"2025-04-27T20:22:28.307Z","log":"2025-04-28T01:52:28.307029+05:30 ronit-pavilion com.docker.backend[25541]: [20:22:28.306438626Z][main.apiproxy         ][W] Error forwarding raw stream from dockerd: write unix /home/ronit/.docker/desktop/docker.sock->@: write: broken pipe"}
+        </div>
+      
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 1:52:30 AM</div>
+          {"timestamp":"2025-04-27T20:22:28.226Z","log":"2025-04-28T01:52:28.224844+05:30 ronit-pavilion com.docker.backend[25541]: [20:22:28.224550317Z][main.apiproxy         ][W] Error forwarding raw stream from dockerd: write unix /home/ronit/.docker/desktop/docker.sock->@: write: broken pipe"}
+        </div>
+      </div>
+      <div class="module">
+        <div class="module-header">
+          <h3>rtw89_8852be</h3>
+          <span class="module-count">12 errors</span>
+        </div>
+        
+        <p>Recent error logs (3 of 12):</p>
+    
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 1:47:15 AM</div>
+          {"timestamp":"2025-04-27T20:17:08.735Z","log":"2025-04-28T01:47:08.734334+05:30 ronit-pavilion kernel: rtw89_8852be 0000:01:00.0: mac init fail, ret:-110"}
+        </div>
+      
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 1:47:12 AM</div>
+          {"timestamp":"2025-04-27T20:17:08.592Z","log":"2025-04-28T01:47:08.591337+05:30 ronit-pavilion kernel: rtw89_8852be 0000:01:00.0: mac init fail, ret:-110"}
+        </div>
+      
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 1:47:09 AM</div>
+          {"timestamp":"2025-04-27T20:17:08.592Z","log":"2025-04-28T01:47:08.591337+05:30 ronit-pavilion kernel: rtw89_8852be 0000:01:00.0: mac init fail, ret:-110"}
+        </div>
+      </div>
+      <div class="module">
+        <div class="module-header">
+          <h3>google-chrome.desktop</h3>
+          <span class="module-count">11 errors</span>
+        </div>
+        
+        <p>Recent error logs (3 of 11):</p>
+    
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 1:51:06 AM</div>
+          {"timestamp":"2025-04-27T20:21:04.995Z","log":"2025-04-28T01:51:04.995468+05:30 ronit-pavilion google-chrome.desktop[11183]: [11177:11205:0428/015104.995071:ERROR:registration_request.cc(291)] Registration response error message: DEPRECATED_ENDPOINT"}
+        </div>
+      
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 1:45:17 AM</div>
+          {"timestamp":"2025-04-27T20:15:16.530Z","log":"2025-04-28T01:45:16.529567+05:30 ronit-pavilion google-chrome.desktop[11183]: [11177:11205:0428/014516.528620:ERROR:registration_request.cc(291)] Registration response error message: DEPRECATED_ENDPOINT"}
+        </div>
+      
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 1:42:29 AM</div>
+          {"timestamp":"2025-04-27T20:12:28.379Z","log":"2025-04-28T01:42:28.378558+05:30 ronit-pavilion google-chrome.desktop[11183]: [11177:11205:0428/014228.377816:ERROR:registration_request.cc(291)] Registration response error message: DEPRECATED_ENDPOINT"}
+        </div>
+      </div>
+      <div class="module">
+        <div class="module-header">
+          <h3>gvfsd-network</h3>
+          <span class="module-count">8 errors</span>
+        </div>
+        
+        <p>Recent error logs (3 of 8):</p>
+    
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 1:16:48 AM</div>
+          {"timestamp":"2025-04-27T19:46:36.661Z","log":"2025-04-28T01:16:36.660455+05:30 ronit-pavilion gvfsd-network[72298]: g_file_info_set_content_type: assertion 'content_type != NULL' failed"}
+        </div>
+      
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 1:16:42 AM</div>
+          {"timestamp":"2025-04-27T19:46:36.661Z","log":"2025-04-28T01:16:36.660324+05:30 ronit-pavilion gvfsd-network[72298]: g_ref_string_release: assertion 'str != NULL' failed"}
+        </div>
+      
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 1:16:41 AM</div>
+          {"timestamp":"2025-04-27T19:46:36.647Z","log":"2025-04-28T01:16:36.646729+05:30 ronit-pavilion gvfsd-network[72298]: Couldn't create directory monitor on wsdd:///. Error: Automount failed: mountpoint for org.gtk.vfs.mountpoint_wsdd already running"}
+        </div>
+      </div>
+      <div class="module">
+        <div class="module-header">
+          <h3>packagekitd</h3>
+          <span class="module-count">5 errors</span>
+        </div>
+        
+        <p>Recent error logs (3 of 5):</p>
+    
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 1:49:40 AM</div>
+          {"timestamp":"2025-04-27T20:19:33.237Z","log":"2025-04-28T01:49:33.203224+05:30 ronit-pavilion packagekitd[113566]: message repeated 8 times: [ pk_package_set_update_severity: assertion 'update_severity == PK_INFO_ENUM_UNKNOWN || update_severity == PK_INFO_ENUM_LOW || update_severity == PK_INFO_ENUM_NORMAL || update_severity == PK_INFO_ENUM_IMPORTANT || update_severity == PK_INFO_ENUM_CRITICAL' failed]"}
+        </div>
+      
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 1:49:38 AM</div>
+          {"timestamp":"2025-04-27T20:19:33.202Z","log":"2025-04-28T01:49:33.202536+05:30 ronit-pavilion packagekitd[113566]: pk_package_set_update_severity: assertion 'update_severity == PK_INFO_ENUM_UNKNOWN || update_severity == PK_INFO_ENUM_LOW || update_severity == PK_INFO_ENUM_NORMAL || update_severity == PK_INFO_ENUM_IMPORTANT || update_severity == PK_INFO_ENUM_CRITICAL' failed"}
+        </div>
+      
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 1:49:37 AM</div>
+          {"timestamp":"2025-04-27T20:19:33.202Z","log":"2025-04-28T01:49:33.202385+05:30 ronit-pavilion packagekitd[113566]: message repeated 34 times: [ pk_package_set_update_severity: assertion 'update_severity == PK_INFO_ENUM_UNKNOWN || update_severity == PK_INFO_ENUM_LOW || update_severity == PK_INFO_ENUM_NORMAL || update_severity == PK_INFO_ENUM_IMPORTANT || update_severity == PK_INFO_ENUM_CRITICAL' failed]"}
+        </div>
+      </div>
+      <div class="module">
+        <div class="module-header">
+          <h3>gl_surface_presentation_helper.cc</h3>
+          <span class="module-count">3 errors</span>
+        </div>
+        
+        <p>Recent error logs (3 of 3):</p>
+    
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 1:50:03 AM</div>
+          {"timestamp":"2025-04-27T20:20:01.440Z","log":"2025-04-28T01:50:01.440537+05:30 ronit-pavilion brave-browser.desktop[113128]: [113183:113183:0428/015001.440334:ERROR:gl_surface_presentation_helper.cc(260)] GetVSyncParametersIfAvailable() failed for 3 times!"}
+        </div>
+      
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 1:50:02 AM</div>
+          {"timestamp":"2025-04-27T20:20:01.438Z","log":"2025-04-28T01:50:01.437642+05:30 ronit-pavilion brave-browser.desktop[113128]: [113183:113183:0428/015001.436932:ERROR:gl_surface_presentation_helper.cc(260)] GetVSyncParametersIfAvailable() failed for 2 times!"}
+        </div>
+      
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 1:50:01 AM</div>
+          {"timestamp":"2025-04-27T20:20:00.374Z","log":"2025-04-28T01:50:00.373588+05:30 ronit-pavilion brave-browser.desktop[113128]: [113183:113183:0428/015000.373047:ERROR:gl_surface_presentation_helper.cc(260)] GetVSyncParametersIfAvailable() failed for 1 times!"}
+        </div>
+      </div>
+      <div class="module">
+        <div class="module-header">
+          <h3>gles2_cmd_decoder_passthrough.cc</h3>
+          <span class="module-count">2 errors</span>
+        </div>
+        
+        <p>Recent error logs (2 of 2):</p>
+    
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 1:17:57 AM</div>
+          {"timestamp":"2025-04-27T19:47:56.951Z","log":"2025-04-28T01:17:56.950700+05:30 ronit-pavilion google-chrome.desktop[11183]: [11223:11223:0428/011756.949856:ERROR:gles2_cmd_decoder_passthrough.cc(1081)] [GroupMarkerNotSet(crbug.com/242999)!:A0C0E30ACC080000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content."}
+        </div>
+      
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 1:11:07 AM</div>
+          {"timestamp":"2025-04-27T19:41:06.670Z","log":"2025-04-28T01:11:06.669556+05:30 ronit-pavilion google-chrome.desktop[11183]: [11223:11223:0428/011106.668752:ERROR:gles2_cmd_decoder_passthrough.cc(1081)] [GroupMarkerNotSet(crbug.com/242999)!:A0F0E30ACC080000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content."}
+        </div>
+      </div>
+      <div class="module">
+        <div class="module-header">
+          <h3>systemd</h3>
+          <span class="module-count">1 errors</span>
+        </div>
+        
+        <p>Recent error logs (1 of 1):</p>
+    
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 1:45:35 AM</div>
+          {"timestamp":"2025-04-27T20:15:34.192Z","log":"2025-04-28T01:45:34.192235+05:30 ronit-pavilion systemd[1]: Starting apport-autoreport.service - Process error reports when automatic reporting is enabled..."}
+        </div>
+      </div>
+      <div class="module">
+        <div class="module-header">
+          <h3>gvfsd-wsdd</h3>
+          <span class="module-count">1 errors</span>
+        </div>
+        
+        <p>Recent error logs (1 of 1):</p>
+    
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 1:16:37 AM</div>
+          {"timestamp":"2025-04-27T19:46:36.463Z","log":"2025-04-28T01:16:36.462626+05:30 ronit-pavilion gvfsd-wsdd[72340]: Failed to spawn the wsdd daemon: Failed to execute child process “wsdd” (No such file or directory)"}
+        </div>
+      </div>
+      <div class="module">
+        <div class="module-header">
+          <h3>systemd[1]</h3>
+          <span class="module-count">1 errors</span>
+        </div>
+        
+        <p>Recent error logs (1 of 1):</p>
+    
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 1:45:36 AM</div>
+          {"timestamp":"2025-04-27T20:15:34.406Z","log":"2025-04-28T01:45:34.405831+05:30 ronit-pavilion systemd[1]: Finished apport-autoreport.service - Process error reports when automatic reporting is enabled."}
+        </div>
+      </div>
+      <div class="module">
+        <div class="module-header">
+          <h3>kernel</h3>
+          <span class="module-count">1 errors</span>
+        </div>
+        
+        <p>Recent error logs (1 of 1):</p>
+    
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 12:55:41 AM</div>
+          {"timestamp":"2025-04-27T19:25:38.679Z","log":"2025-04-28T00:55:38.677306+05:30 ronit-pavilion kernel: rtw89_8852be 0000:01:00.0: mac init fail, ret:-110"}
+        </div>
+      </div>
+      <div class="module">
+        <div class="module-header">
+          <h3>brave-browser.desktop</h3>
+          <span class="module-count">1 errors</span>
+        </div>
+        
+        <p>Recent error logs (1 of 1):</p>
+    
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 1:49:29 AM</div>
+          {"timestamp":"2025-04-27T20:19:28.574Z","log":"2025-04-28T01:49:28.573938+05:30 ronit-pavilion brave-browser.desktop[113128]: [113129:113129:0428/014928.573333:ERROR:interface_endpoint_client.cc(725)] Message 0 rejected by interface blink.mojom.WidgetHost"}
+        </div>
+      </div>
+      <div class="module">
+        <div class="module-header">
+          <h3>atom_cache.cc</h3>
+          <span class="module-count">1 errors</span>
+        </div>
+        
+        <p>Recent error logs (1 of 1):</p>
+    
+        <div class="log-entry">
+          <div class="timestamp">4/28/2025, 1:10:51 AM</div>
+          {"timestamp":"2025-04-27T19:40:50.811Z","log":"2025-04-28T01:10:50.811054+05:30 ronit-pavilion google-chrome.desktop[11183]: [11177:11177:0428/011050.810429:ERROR:atom_cache.cc(231)] Add chromium/x-internal-source-rfh-token to kAtomsToCache"}
+        </div>
+      </div>
+      <div class="summary">
+        <h2>Summary</h2>
+        <p><strong>Total Errors:</strong> 103</p>
+        <p><strong>Modules Affected:</strong> 15</p>
+        <p><strong>Report Period:</strong> Report covers today (Apr 28, 2025)</p>
+        <p>For more detailed analysis, please visit the System Log Analyzer dashboard.</p>
+      </div>
+      
+      <div class="download-note">
+        <p><strong>Note:</strong> You can download this report as an HTML file from the Settings panel in the System Log Analyzer dashboard.</p>
+      </div>
+    </body>
+    </html>
+  
