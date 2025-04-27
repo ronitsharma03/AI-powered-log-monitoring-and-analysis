@@ -9,12 +9,12 @@ interface Log {
 
 const logSources = [
   "/var/log/syslog",
-  "/var/log/syslog.1",
-  "/var/log/kern.log",
-  "/var/log/auth.log",
-  "/var/log/cups/error_log",
-  "/var/log/dpkg.log",
-  "/var/log/apport.log"
+  // "/var/log/syslog.1",
+  // "/var/log/kern.log",
+  // "/var/log/auth.log",
+  // "/var/log/cups/error_log",
+  // "/var/log/dpkg.log",
+  // "/var/log/apport.log"
 ];
 
 const errorKeywords = [

@@ -2,6 +2,109 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Add dashboard animations - with reduced durations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.98); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(10px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-in-out;
+  will-change: opacity;
+}
+
+.animate-scaleIn {
+  animation: scaleIn 0.3s ease-out;
+  will-change: transform, opacity;
+}
+
+.animate-slideInRight {
+  animation: slideInRight 0.2s ease-out;
+  will-change: transform, opacity;
+}
+
+/* Prevent flickering during updates */
+.recharts-wrapper {
+  will-change: transform;
+  backface-visibility: hidden;
+  transition: transform 0.1s ease-in-out;
+  transform: translateZ(0);
+}
+
+.recharts-wrapper svg {
+  overflow: visible;
+}
+
+.recharts-surface {
+  transform: translateZ(0);
+}
+
+.recharts-wrapper:hover {
+  transform: scale(1.005) translateZ(0);
+}
+
+/* Custom scrollbar for better UX */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1f2937;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .chart-container {
+    height: 250px !important;
+  }
+}
+
+/* Animation for the module treemap cells */
+.recharts-treemap-depth-1:hover .recharts-treemap-tile {
+  filter: brightness(1.1);
+}
+
+/* Reduce dashboard flicker */
+.recharts-wrapper, 
+.recharts-surface, 
+.recharts-layer {
+  transition: none !important;
+}
+
+/* Smoother rendering for text */
+.recharts-text {
+  text-rendering: optimizeLegibility;
+}
+
+/* Fix for animation jank */
+.recharts-legend-wrapper,
+.recharts-tooltip-wrapper,
+.recharts-default-tooltip {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
 :root {
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -14,8 +117,6 @@ body {
   min-width: 320px;
   min-height: 100vh;
 }
-
-
 
 @layer base {
   :root {

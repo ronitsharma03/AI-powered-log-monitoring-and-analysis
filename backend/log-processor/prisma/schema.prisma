@@ -27,3 +27,13 @@ enum logStatus{
   Failure
   Success
 }
+
+model EmailSetting {
+  id Int @id @default(autoincrement())
+  email String
+  reportFrequency String // daily, weekly, monthly
+  reportTime String // HH:MM format
+  samplesPerModule Int @default(3)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
