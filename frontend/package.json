@@ -13,7 +13,7 @@
     "@radix-ui/react-separator": "^1.1.1",
     "@react-aria/utils": "^3.26.0",
     "autoprefixer": "^10.4.17",
-    "axios": "^1.7.9",
+    "axios": "^1.8.2",
     "bull": "^4.16.5",
     "chart.js": "^4.4.7",
     "class-variance-authority": "^0.7.1",
